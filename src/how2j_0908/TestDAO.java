@@ -20,6 +20,8 @@ import java.util.List;
  所有的数据库操作都需要事先拿到一个数据库连接Connection，
  以前的做法每个方法里都会写一个，如果要改动密码，那么每个地方都需要修改。
  通过这种方式，只需要修改这一个地方就可以了。 代码变得更容易维护，而且也更加简洁。
+ jdbc:mysql://127.0.0.1:3306/test?characterEncoding=UTF-8
+ jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8
 
 
  */
@@ -60,12 +62,24 @@ public class TestDAO implements DAO {
 
 
     @Override
-    public void add(EntryForm form) {
+    public void add(EntryForm student) {
+        String sql = "insert into EntryForm values(null,?,?,?,?)";
+        try (Connection c = getCollcetion(); PreparedStatement ps = c.prepareStatement(sql);) {
+            ps.setString(1, student.name);
+            ps.setInt(2, student.qq);
+            ps.setString(3, student.type);
+            ps.setString(4, student.graduateFrom);
+
+            ps.execute();
+            ResultSet rs = ps.getGeneratedKeys();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
-    public void update(EntryForm form) {
+    public void update(EntryForm student) {
 
     }
 
@@ -90,6 +104,19 @@ public class TestDAO implements DAO {
     }
 
     public static void main(String[] args) {
+        //下面这两行.应该如何解读?
+        TestDAO dao = new TestDAO();
+        List<EntryForm> nf = dao.list();
+        System.out.println("数据库中总共有" + nf.size() + "条数据");
+        System.out.println("新增一条数据");
+        EntryForm student = new EntryForm();
+        dao.add(student);
+        nf = dao.list();
+        System.out.println("数据库中总共有" + nf.size() + "条数据");
+
+
+
+
 
     }
 }

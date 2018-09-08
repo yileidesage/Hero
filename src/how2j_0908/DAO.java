@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface DAO {
     //增加
-    public void add(EntryForm form);
+    public void add(EntryForm student);
     //修改
-    public void update(EntryForm form);
+    public void update(EntryForm student);
     //删除
     public void delete(int id);
     //获取
