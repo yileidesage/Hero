@@ -6,4 +6,8 @@ public class EntryForm {
     public int qq;
     public String type;
     public String graduateFrom;
+    @Override
+    public String toString(){
+        return name;
+    }
 }
